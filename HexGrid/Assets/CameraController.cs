@@ -5,7 +5,8 @@ public class CameraController : MonoBehaviour
     public float panSpeed = 20f;
     public float panBorderThickness = 10f;
     public Vector2 panLimit;
-
+    public bool edgePan = false;
+    
     public float scrollSpeed = 20f;
     public float minY = 20f;
     public float maxY = 120f;
@@ -15,19 +16,19 @@ public class CameraController : MonoBehaviour
     {
         Vector3 pos = transform.position;
 
-        if (Input.GetKey(KeyCode.W) || Input.mousePosition.y >= Screen.height - panBorderThickness)
+        if (Input.GetKey(KeyCode.W) || Input.mousePosition.y >= Screen.height - panBorderThickness && edgePan)
         {
             pos.z += panSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.S) || Input.mousePosition.y <= panBorderThickness)
+        if (Input.GetKey(KeyCode.S) || Input.mousePosition.y <= panBorderThickness && edgePan)
         {
             pos.z -= panSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.D) || Input.mousePosition.x >= Screen.width - panBorderThickness)
+        if (Input.GetKey(KeyCode.D) || Input.mousePosition.x >= Screen.width - panBorderThickness && edgePan)
         {
             pos.x += panSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.A) || Input.mousePosition.x <= panBorderThickness)
+        if (Input.GetKey(KeyCode.A) || Input.mousePosition.x <= panBorderThickness && edgePan)
         {
             pos.x -= panSpeed * Time.deltaTime;
         }
