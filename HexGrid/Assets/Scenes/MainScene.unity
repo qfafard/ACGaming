@@ -563,8 +563,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1544584103}
-  - component: {fileID: 1544584104}
   - component: {fileID: 1544584105}
+  - component: {fileID: 1544584106}
   m_Layer: 0
   m_Name: HexGrid
   m_TagString: Untagged
@@ -587,7 +587,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1544584104
+--- !u!114 &1544584105
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -596,14 +596,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1544584099}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84b564850875a124e95139eb2d3db3dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 4dd3492f300245e88fe192a4bd1c31d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 9, y: 9}
+  hexGridLayout: {fileID: 0}
+  first: {x: 0, y: 1}
+  last: {x: 2, y: 2}
+  timeToReset: 8
+--- !u!114 &1544584106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544584099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca2ac39002554affa02d514cbc0186e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridSize: {x: 50, y: 50}
   biomes:
   - name: Water
     mat: {fileID: 2100000, guid: 0321df1c343beb1479d46d44d13c7924, type: 2}
-    maxHeight: 1.1
+    maxHeight: 1
     peakHeight: 0
     debugAddHeight: 0
   - name: Grass
@@ -622,27 +638,17 @@ MonoBehaviour:
     peakHeight: -1.71
     debugAddHeight: 1.5
   scale: 4
-  seed: 
+  seed: 2
   innerSize: 0
   outerSize: 1.5
   height: 4
-  flatTopEdge: 1
---- !u!114 &1544584105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1544584099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dd3492f300245e88fe192a4bd1c31d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hexGridLayout: {fileID: 0}
-  first: {x: 0, y: 1}
-  last: {x: 2, y: 2}
-  timeToReset: 8
+  x: 0
+  y: 0
+  zradius: 2
+  maxNumOfIslands: 3
+  minNumOfIslands: 10
+  minIslandSize: 5
+  maxIslandSize: 15
 --- !u!1 &1709341275
 GameObject:
   m_ObjectHideFlags: 0

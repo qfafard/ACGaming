@@ -60,9 +60,9 @@ public class Pathfinder : MonoBehaviour
             var foundGO = hexGridLayout.GetTileFromCoordinate(x);
             var hexRenderer = foundGO.GetComponent<HexRenderer>();
             
-            var tileBiome = hexGridLayout.GetBiomes().Find(biome => hexRenderer.height <= biome.maxHeight);
+            //var tileBiome = hexGridLayout.GetBiomes().Find(biome => hexRenderer.height <= biome.maxHeight);
             
-            foundGO.GetComponent<MeshRenderer>().sharedMaterial = tileBiome.mat;
+            //foundGO.GetComponent<MeshRenderer>().sharedMaterial = tileBiome.mat;
         }
     }
 
@@ -70,25 +70,50 @@ public class Pathfinder : MonoBehaviour
     {
         List<Vector2Int> neighbors = new List<Vector2Int>();
 
-        if (hexGridLayout.FlatTopEdge())
+        var q = hex.x;
+        var r = hex.y;
+        
+        var isEven = hex.x % 2 == 0;
+        
+        if(isEven)
         {
-            // Flat-topped hexes
-            neighbors.Add(new Vector2Int(hex.x + 1, hex.y));
-            neighbors.Add(new Vector2Int(hex.x, hex.y + 1));
-            neighbors.Add(new Vector2Int(hex.x - 1, hex.y + 1));
-            neighbors.Add(new Vector2Int(hex.x - 1, hex.y));
-            neighbors.Add(new Vector2Int(hex.x, hex.y - 1));
-            neighbors.Add(new Vector2Int(hex.x + 1, hex.y - 1));
+            //Top
+            neighbors.Add(new Vector2Int(q, r - 1));
+            
+            //Top right
+            neighbors.Add(new Vector2Int(q + 1, r - 1));
+            
+            //Bottom right
+            neighbors.Add(new Vector2Int(q + 1, r));
+            
+            //Bottom
+            neighbors.Add(new Vector2Int(q, r + 1));
+            
+            //Bottom left
+            neighbors.Add(new Vector2Int(q - 1, r));
+            
+            //Top left
+            neighbors.Add(new Vector2Int(q - 1, r - 1));
         }
         else
         {
-            // Pointy-topped hexes
-            neighbors.Add(new Vector2Int(hex.x + 1, hex.y));
-            neighbors.Add(new Vector2Int(hex.x + 1, hex.y - 1));
-            neighbors.Add(new Vector2Int(hex.x, hex.y - 1));
-            neighbors.Add(new Vector2Int(hex.x - 1, hex.y));
-            neighbors.Add(new Vector2Int(hex.x - 1, hex.y + 1));
-            neighbors.Add(new Vector2Int(hex.x, hex.y + 1));
+            //Top
+            neighbors.Add(new Vector2Int(q, r - 1));
+            
+            //Top right
+            neighbors.Add(new Vector2Int(q + 1, r));
+            
+            //Bottom right
+            neighbors.Add(new Vector2Int(q + 1, r + 1));
+            
+            //Bottom
+            neighbors.Add(new Vector2Int(q, r + 1));
+            
+            //Bottom left
+            neighbors.Add(new Vector2Int(q - 1, r + 1));
+            
+            //Top left
+            neighbors.Add(new Vector2Int(q - 1, r));
         }
 
         return neighbors;
