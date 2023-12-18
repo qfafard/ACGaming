@@ -15,7 +15,7 @@ public class Pathfinder : MonoBehaviour
     public void Awake()
     {
         hexGridLayout = GetComponent<HexGridLayout>();
-        _grid = new Vector2Int[hexGridLayout.gridSize.x, hexGridLayout.gridSize.y];
+        _grid = new Vector2Int[hexGridLayout.GetGridSize().x, hexGridLayout.GetGridSize().y];
     }
 
     [Button]
@@ -60,17 +60,17 @@ public class Pathfinder : MonoBehaviour
             var foundGO = hexGridLayout.GetTileFromCoordinate(x);
             var hexRenderer = foundGO.GetComponent<HexRenderer>();
             
-            var tileBiome = hexGridLayout.biomes.Find(biome => hexRenderer.height <= biome.maxHeight);
+            var tileBiome = hexGridLayout.GetBiomes().Find(biome => hexRenderer.height <= biome.maxHeight);
             
             foundGO.GetComponent<MeshRenderer>().sharedMaterial = tileBiome.mat;
         }
     }
-    
-    public List<Vector2Int> GetHexNeighbors(Vector2Int hex)
+
+    private List<Vector2Int> GetHexNeighbors(Vector2Int hex)
     {
         List<Vector2Int> neighbors = new List<Vector2Int>();
 
-        if (hexGridLayout.flatTopEdge)
+        if (hexGridLayout.FlatTopEdge())
         {
             // Flat-topped hexes
             neighbors.Add(new Vector2Int(hex.x + 1, hex.y));
@@ -99,14 +99,14 @@ public class Pathfinder : MonoBehaviour
         return (int)((Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y) + Math.Abs(a.z - b.z)) / 2);
     }
 
-    public int OddROffsetDistance(Vector2Int a, Vector2Int b)
+    private int OddROffsetDistance(Vector2Int a, Vector2Int b)
     {
         Vector2Int ac = new Vector2Int(a.x - (a.y - (a.y & 1)) / 2, a.y);
         Vector2Int bc = new Vector2Int(b.x - (b.y - (b.y & 1)) / 2, b.y);
         return (Math.Abs(ac.x - bc.x) + Math.Abs(ac.x + ac.y - bc.x - bc.y) + Math.Abs(ac.y - bc.y)) / 2;
     }
 
-    public int Heuristic(Vector2Int a, Vector2Int b)
+    private int Heuristic(Vector2Int a, Vector2Int b)
     {
         return OddROffsetDistance(a, b);
     }
@@ -119,7 +119,7 @@ public class Pathfinder : MonoBehaviour
         return new Vector3(x, y, z);
     }
 
-    public List<Vector2Int> FindPath(Vector2Int start, Vector2Int end)
+    private List<Vector2Int> FindPath(Vector2Int start, Vector2Int end)
     {
         Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
         Dictionary<Vector2Int, float> costSoFar = new Dictionary<Vector2Int, float>();

@@ -1,0 +1,1 @@
+Make sure to copy the main scene if you wish to work inside and modify the scene.

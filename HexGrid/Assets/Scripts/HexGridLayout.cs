@@ -6,18 +6,34 @@ using UnityEngine.Tilemaps;
 
 public class HexGridLayout : MonoBehaviour
 {
-    [Header("Grid Settings")] 
-    public Vector2Int gridSize;
-    public List<Biome> biomes;
-    public float scale = 1f;
-    public string seed;
+    [SerializeField] private Vector2Int gridSize;
+    [SerializeField] private List<Biome> biomes;
+    
+    [SerializeField] private float scale = 1f;
+    [SerializeField] private string seed;
+    
     [Header("Hex Settings")] 
-    public float innerSize = 1f;
-    public float outerSize = 1.5f;
-    public float height = 1f;
-    public bool flatTopEdge;
-    public Material material;
+    [SerializeField] private float innerSize = 1f;
+    [SerializeField] private float outerSize = 1.5f;
+    [SerializeField] private float height = 1f;
+    [SerializeField] private bool flatTopEdge;
 
+    public bool FlatTopEdge()
+    {
+        return(flatTopEdge);
+    }
+    
+    public Vector2Int GetGridSize()
+    {
+        return gridSize;
+    }
+    
+    public List <Biome> GetBiomes()
+    {
+        return biomes;
+    }
+    
+    
     private void OnEnable()
     {
         LayoutGrid();

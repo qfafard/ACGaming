@@ -2,18 +2,60 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public float panSpeed = 20f;
-    public float panBorderThickness = 10f;
-    public Vector2 panLimit;
-    public bool edgePan = false;
+    [SerializeField] private float panSpeed = 20f;
+    [SerializeField] private float panBorderThickness = 10f;
+    [SerializeField] private Vector2 panLimit;
+    [SerializeField] private bool edgePan = false;
     
-    public float scrollSpeed = 20f;
-    public float minY = 20f;
-    public float maxY = 120f;
+    [SerializeField] private float scrollSpeed = 20f;
+    [SerializeField] private float minY = 120f;
+    [SerializeField] private float maxY = 120f;
+    [SerializeField] private Vector3 dragStartPosition;
+    private Camera _camera;
+    private Plane _plane;
 
+    private void Awake()
+    {
+        _camera = Camera.main;
+        _plane = new Plane(Vector3.up, Vector3.zero);
+    }
+
+    private Vector3 velocity = Vector3.zero;
+    private float smoothTime = 0.1f;
+
+    private void HandleMouseInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+
+            if (_plane.Raycast(ray, out float entry))
+            {
+                dragStartPosition = transform.position - ray.GetPoint(entry); // Invert the direction
+            }
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+
+            if (_plane.Raycast(ray, out float entry))
+            {
+                Vector3 dragCurrentPosition = ray.GetPoint(entry);
+                Vector3 targetPosition = dragCurrentPosition - dragStartPosition; // Add the offset
+                targetPosition.y = transform.position.y; // maintain the same height
+
+                // Smoothly move the camera towards that target position
+                transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+            }
+        }
+    }
+    
+    
     // Update is called once per frame
     void Update()
     {
+        HandleMouseInput();
         Vector3 pos = transform.position;
 
         if (Input.GetKey(KeyCode.W) || Input.mousePosition.y >= Screen.height - panBorderThickness && edgePan)
