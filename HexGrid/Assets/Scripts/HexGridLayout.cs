@@ -93,54 +93,21 @@ public class HexGridLayout : MonoBehaviour
     public List<HexRenderer> GetHexesWithinRadiusOf(HexRenderer center, int radius)
     {
         List<HexRenderer> results = new List<HexRenderer>();
-        HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
-        Queue<Vector2Int> queue = new Queue<Vector2Int>();
-
-        Vector2Int centerCoord = center.coordinate;
-        queue.Enqueue(centerCoord);
-        visited.Add(centerCoord);
-
-        while (queue.Count > 0)
+        for(var i = 1; i <= radius; i++)
         {
-            Vector2Int current = queue.Dequeue();
-            HexRenderer currentTile = GetTileFromCoordinate(current);
-            if (currentTile != null)
+            foreach(var x in GetHexNeighbors(center.coordinate, i))
             {
-                results.Add(currentTile);
-            }
-
-            if (OddROffsetDistance(centerCoord, current) < radius)
-            {
-                foreach (Vector2Int neighbor in GetHexNeighbors(current))
-                {
-                    if (!visited.Contains(neighbor))
-                    {
-                        queue.Enqueue(neighbor);
-                        visited.Add(neighbor);
-                    }
-                }
+                results.Add(GetTileFromCoordinate(x));
+                Debug.Log(GetTileFromCoordinate(x).name);
             }
         }
-
+        results.Add(center);
         return results;
     }
-    
-    private int OddROffsetDistance(Vector2Int coord1, Vector2Int coord2)
-    {
-        // Convert odd-r offset to cube coordinates
-        int x1 = coord1.x - (coord1.y - (coord1.y & 1)) / 2;
-        int z1 = coord1.y;
-        int y1 = -x1 - z1;
 
-        int x2 = coord2.x - (coord2.y - (coord2.y & 1)) / 2;
-        int z2 = coord2.y;
-        int y2 = -x2 - z2;
 
-        // Calculate the distance
-        return (Math.Abs(x1 - x2) + Math.Abs(y1 - y2) + Math.Abs(z1 - z2)) / 2;
-    }
 
-    private List<Vector2Int> GetHexNeighbors(Vector2Int hex)
+    private List<Vector2Int> GetHexNeighbors(Vector2Int hex, int distance = 1)
     {
         List<Vector2Int> neighbors = new List<Vector2Int>();
 
@@ -152,42 +119,42 @@ public class HexGridLayout : MonoBehaviour
         if(isEven)
         {
             //Top
-            neighbors.Add(new Vector2Int(q, r - 1));
+            neighbors.Add(new Vector2Int(q, r - distance));
             
             //Top right
-            neighbors.Add(new Vector2Int(q + 1, r - 1));
+            neighbors.Add(new Vector2Int(q + distance, r - distance));
             
             //Bottom right
-            neighbors.Add(new Vector2Int(q + 1, r));
+            neighbors.Add(new Vector2Int(q + distance, r));
             
             //Bottom
-            neighbors.Add(new Vector2Int(q, r + 1));
+            neighbors.Add(new Vector2Int(q, r + distance));
             
             //Bottom left
-            neighbors.Add(new Vector2Int(q - 1, r));
+            neighbors.Add(new Vector2Int(q - distance, r));
             
             //Top left
-            neighbors.Add(new Vector2Int(q - 1, r - 1));
+            neighbors.Add(new Vector2Int(q - distance, r - distance));
         }
         else
         {
             //Top
-            neighbors.Add(new Vector2Int(q, r - 1));
+            neighbors.Add(new Vector2Int(q, r - distance));
             
             //Top right
-            neighbors.Add(new Vector2Int(q + 1, r));
+            neighbors.Add(new Vector2Int(q + distance, r));
             
             //Bottom right
-            neighbors.Add(new Vector2Int(q + 1, r + 1));
+            neighbors.Add(new Vector2Int(q + distance, r + distance));
             
             //Bottom
-            neighbors.Add(new Vector2Int(q, r + 1));
+            neighbors.Add(new Vector2Int(q, r + distance));
             
             //Bottom left
-            neighbors.Add(new Vector2Int(q - 1, r + 1));
+            neighbors.Add(new Vector2Int(q - distance, r + distance));
             
             //Top left
-            neighbors.Add(new Vector2Int(q - 1, r));
+            neighbors.Add(new Vector2Int(q - distance, r));
         }
 
         return neighbors;

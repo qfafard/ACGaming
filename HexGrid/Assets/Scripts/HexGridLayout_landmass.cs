@@ -54,7 +54,7 @@ public class HexGridLayoutLandmass : HexGridLayout
                 tiles[index].SetHeight(0);
             }
             var coord = tiles[index].coordinate;
-            tiles[index].SetHeight(tiles[index].height + noiseMap[coord.x, coord.y] * centerHeight);
+            tiles[index].SetHeight(tiles[index].height + noiseMap[coord.x, coord.y]);
             tiles[index].SetMaterial(biomes[1].mat);
         }
     }
